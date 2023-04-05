@@ -64,10 +64,21 @@ Afin de pouvoir chercher plus rapidement les comptes lors de transactions inter-
 
 ### 1 - Comptes client
 
-Vue permettant d'afficher l'ensemble des comptes par clients.
+Vue permettant d'afficher l'ensemble des comptes par client.
 
 ```sql
-
+CREATE VIEW clientaccounts
+AS
+  SELECT a.id_client,
+         c.last_name,
+         c.first_name,
+         a.id AS accountIndex,
+         a.balance,
+         a.iban
+  FROM   account a
+         inner join client c
+                 ON a.id_client = c.id
+  ORDER  BY a.id_client; 
 ```
 
 
