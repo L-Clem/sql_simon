@@ -12,6 +12,7 @@
 - [Ma (première) DB](#ma--premi-re--db)
   * [TOC](#toc)
   * [But](#but)
+    + [ERD](#erd)
   * [Indexes](#indexes)
     + [1 - Loan: opening](#1---loan--opening)
     + [2 - Advisor: status](#2---advisor--status)
@@ -35,6 +36,9 @@
 ## But
 
 Notre base représente une structure de banque simplifiée.
+
+### ERD
+![ERD](erd.png)
 
 <br>
 
