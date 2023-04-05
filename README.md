@@ -5,8 +5,6 @@
   - Clément LAFON
   - Clément LO-CASCIO
 
-<br>
-
 ## TOC
 
 - [Ma (première) DB](#ma--premi-re--db)
@@ -38,7 +36,7 @@
 Notre base représente une structure de banque simplifiée.
 
 ### ERD
-![ERD](erd.png)
+![ERD](SQL Simon Banque.png)
 
 <br>
 
