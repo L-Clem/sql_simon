@@ -89,17 +89,30 @@ AS
 Vue permettant d'afficher le total des montants des comptes par clients.
 
 ```sql
-CREATE VIEW clientTotalBalanceAccounts
-AS
-SELECT a.id_client,
-       c.last_name,
-       c.first_name,
-       SUM(a.balance) AS totalAccountBalance
-FROM   account a
-       INNER JOIN client c
-               ON a.id_client = c.id
-GROUP BY a.id_client
-ORDER  BY a.id_client;
+SELECT
+	a3.id_client,
+	SUM(a3.balance) as total_account,
+	sub2.total_sa, 
+	sub2.total_ln,
+	(SUM(a3.balance) + sub2.total_sa + sub2.total_ln) as total_account_amounts_by_client
+FROM (
+	SELECT 
+		a2.id_client as id_client,
+		SUM(sa.balance) as total_sa,
+		sub.total_ln
+	FROM (
+			SELECT a.id_client, SUM(l.balance) as total_ln
+			FROM loan l 
+				inner join account a ON a.id = l.id_account
+			GROUP BY a.id_client 
+		) sub
+		INNER join account a2 ON a2.id_client = sub.id_client
+		inner join saving_account sa ON a2.id = sa.id_account  
+	GROUP BY a2.id_client
+) sub2
+	inner join account a3 ON sub2.id_client = a3.id_client 
+GROUP BY sub2.id_client
+ORDER BY sub2.id_client 
 ```
 
 
