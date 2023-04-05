@@ -174,12 +174,37 @@ ORDER  BY c.id;
 
 ## Procédures stockées
 
-### 1
+### 1 - Total des actifs
 
 Procédure permettant d'obtenir le total des actifs d'un client (comptes, prêts, épargnes).
 
 ```sql
-
+DELIMITER //
+CREATE PROCEDURE getClientTotalOfAssets 
+(IN client_id INT, OUT totalOfAssets DECIMAL(9,2))
+	BEGIN
+		DECLARE tab DECIMAL(8,2);
+	    DECLARE tlb DECIMAL(8,2);
+	    DECLARE tsb DECIMAL(8,2);
+		
+		SELECT totalAccountBalance
+		INTO tab
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;
+	
+		SELECT totalLoanBalance
+		INTO tlb
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;
+	
+		SELECT totalSavingBalance
+		INTO tsb
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;	
+	
+		SET totalOfAssets = tab + tlb + tsb;
+	END //
+DELIMITER ;
 ```
 
 
