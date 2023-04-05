@@ -17,15 +17,16 @@
     + [3 - Account: iban, swift](#3---account--iban--swift)
   * [Vues](#vues)
     + [1 - Comptes client](#1---comptes-client)
-    + [2 - Montants client](#2---montants-client)
-    + [3 - Agence client](#3---agence-client)
-    + [4 -](#4--)
-    + [5 -](#5--)
+    + [2 - Montants comptes clients](#2---montants-comptes-clients)
+    + [3 - Montants prêts clients](#3---montants-pr-ts-clients)
+    + [4 - Montants épargnes clients](#4---montants--pargnes-clients)
+    + [5 - Montants clients](#5---montants-clients)
   * [Procédures stockées](#proc-dures-stock-es)
     + [1](#1)
     + [2](#2)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 <br>
@@ -83,29 +84,91 @@ AS
 
 
 
-### 2 - Montants client
+### 2 - Montants comptes clients
 
-Vue permettant d'afficher le total des montant des comptes par clients ainsi que des prêts et de l'épargne.
+Vue permettant d'afficher le total des montants des comptes par clients.
 
 ```sql
+CREATE VIEW clientTotalBalanceAccounts
+AS
+SELECT a.id_client,
+       c.last_name,
+       c.first_name,
+       SUM(a.balance) AS totalAccountBalance
+FROM   account a
+       INNER JOIN client c
+               ON a.id_client = c.id
+GROUP BY a.id_client
+ORDER  BY a.id_client;
 ```
 
 
 
-### 3 - Agence client
+### 3 - Montants prêts clients
 
-Vue permettant d'afficher les informations d'un client et de son/ses agences.
+Vue permettant d'afficher le total des montants des prêts par clients.
 
 ```sql
+CREATE VIEW clientTotalBalanceSavings
+AS
+SELECT a.id_client,
+       c.last_name,
+       c.first_name,
+       SUM(l.balance) AS totalLoanBalance
+FROM   account a
+       INNER JOIN client c
+               ON a.id_client = c.id
+       INNER JOIN loan l ON a.id = l.id_account 
+GROUP BY c.id
+ORDER  BY a.id_client;
 ```
 
 
 
-### 4 -
+### 4 - Montants épargnes clients
+
+Vue permettant d'afficher le total des montants des épargnes par clients.
+
+```sql
+CREATE VIEW clientTotalBalanceSavings
+AS
+SELECT a.id_client,
+       c.last_name,
+       c.first_name,
+       SUM(sa.balance) AS totalSavingBalance
+FROM   account a
+       INNER JOIN client c
+               ON a.id_client = c.id
+       INNER JOIN saving_account sa ON a.id = sa.id_account 
+GROUP BY c.id
+ORDER  BY a.id_client;
+```
 
 
 
-### 5 -
+### 5 - Montants clients
+
+```sql
+CREATE VIEW clientTotalBalanceAllTypes
+AS
+SELECT c.id,
+       c.last_name,
+       c.first_name,
+       ctba.totalAccountBalance,
+       ctbl.totalLoanBalance,
+       ctbs.totalSavingBalance
+FROM   client c
+       INNER JOIN clientTotalBalanceAccounts ctba 
+               ON c.id = ctba.id_client
+       INNER JOIN clientTotalBalanceLoans ctbl
+               ON c.id = ctbl.id_client
+       INNER JOIN clientTotalBalanceSavings ctbs
+               ON c.id = ctbs.id_client
+GROUP  BY c.id
+ORDER  BY c.id;
+```
+
+
 
 <br>
 
