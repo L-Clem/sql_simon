@@ -109,7 +109,7 @@ ORDER  BY a.id_client;
 Vue permettant d'afficher le total des montants des prêts par clients.
 
 ```sql
-CREATE VIEW clientTotalBalanceSavings
+CREATE VIEW clienttotalbalanceloans 
 AS
 SELECT a.id_client,
        c.last_name,
