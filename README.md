@@ -36,7 +36,7 @@
 Notre base représente une structure de banque simplifiée.
 
 ### ERD
-![ERD]("SQL Simon Banque".png)
+![ERD]('erd.png')
 
 <br>
 
