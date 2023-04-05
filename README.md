@@ -36,7 +36,7 @@
 Notre base représente une structure de banque simplifiée.
 
 ### ERD
-![ERD]('erd.png')
+![ERD](erd.png)
 
 <br>
 
