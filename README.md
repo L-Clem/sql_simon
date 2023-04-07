@@ -22,11 +22,10 @@
     + [4 - Montants épargnes clients](#4---montants--pargnes-clients)
     + [5 - Montants clients](#5---montants-clients)
   * [Procédures stockées](#proc-dures-stock-es)
-    + [1](#1)
-    + [2](#2)
+    + [1 - Total des actifs](#1---total-des-actifs)
+    + [2 - Agences les plus proches](#2---agences-les-plus-proches)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 
 <br>
@@ -209,9 +208,35 @@ DELIMITER ;
 
 
 
-### 2
+### 2 - Agences les plus proches
 
+Procédure permettant d'obtenir les agences les plus proches d'un client.
 
-
-
-
+```sql
+DELIMITER //
+CREATE PROCEDURE getClientTotalOfAssets 
+(IN client_id INT, OUT totalOfAssets DECIMAL(9,2))
+	BEGIN
+		DECLARE tab DECIMAL(8,2);
+	    DECLARE tlb DECIMAL(8,2);
+	    DECLARE tsb DECIMAL(8,2);
+		
+		SELECT totalAccountBalance
+		INTO tab
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;
+	
+		SELECT totalLoanBalance
+		INTO tlb
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;
+	
+		SELECT totalSavingBalance
+		INTO tsb
+		FROM clientTotalBalanceAllTypes
+		WHERE id = client_id;	
+	
+		SET totalOfAssets = tab + tlb + tsb;
+	END //
+DELIMITER ;
+```
