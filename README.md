@@ -86,14 +86,13 @@ AS
 
 ### 2 - Montants comptes clients
 
-Vue permettant d'afficher le total des montants des comptes par clients.
+Vue permettant d'afficher les 10 plus grosses fortunes.
 
 ```sql
+CREATE VIEW top_10_wealthiest_people
+AS
 SELECT
 	a3.id_client,
-	SUM(a3.balance) as total_account,
-	sub2.total_sa, 
-	sub2.total_ln,
 	(SUM(a3.balance) + sub2.total_sa + sub2.total_ln) as total_account_amounts_by_client
 FROM (
 	SELECT 
@@ -105,14 +104,17 @@ FROM (
 			FROM loan l 
 				inner join account a ON a.id = l.id_account
 			GROUP BY a.id_client 
+			ORDER BY total_ln DESC
 		) sub
 		INNER join account a2 ON a2.id_client = sub.id_client
 		inner join saving_account sa ON a2.id = sa.id_account  
 	GROUP BY a2.id_client
+	ORDER BY total_sa DESC
 ) sub2
 	inner join account a3 ON sub2.id_client = a3.id_client 
 GROUP BY sub2.id_client
-ORDER BY sub2.id_client 
+ORDER BY total_account_amounts_by_client DESC 
+LIMIT 10
 ```
 
 
@@ -159,26 +161,11 @@ ORDER  BY a.id_client;
 
 
 
-### 5 - Montants clients
+### 5 - Montant des agios
 
 ```sql
-CREATE VIEW clientTotalBalanceAllTypes
+CREATE VIEW 
 AS
-SELECT c.id,
-       c.last_name,
-       c.first_name,
-       ctba.totalAccountBalance,
-       ctbl.totalLoanBalance,
-       ctbs.totalSavingBalance
-FROM   client c
-       INNER JOIN clientTotalBalanceAccounts ctba 
-               ON c.id = ctba.id_client
-       INNER JOIN clientTotalBalanceLoans ctbl
-               ON c.id = ctbl.id_client
-       INNER JOIN clientTotalBalanceSavings ctbs
-               ON c.id = ctbs.id_client
-GROUP  BY c.id
-ORDER  BY c.id;
 ```
 
 
@@ -224,7 +211,10 @@ DELIMITER ;
 
 ### 2
 
+Procédure permettant d'obtenir les agences les plus proches d'un client.
 
 
+### 3 
 
+Procédure permettant de dire si un client à la  possibilité d'obtenir un crédit
 
