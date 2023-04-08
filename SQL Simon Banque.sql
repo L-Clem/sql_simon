@@ -130,3 +130,23 @@ ALTER TABLE `saving_account` ADD FOREIGN KEY (`id_account`) REFERENCES `account`
 ALTER TABLE `saving_account` ADD FOREIGN KEY (`id_product`) REFERENCES `product_name` (`id`);
 
 ALTER TABLE `loan` ADD FOREIGN KEY (`id_account`) REFERENCES `account` (`id`);
+
+
+/* Met à jour la balance du compte au moment d'une transaction */
+
+DELIMITER $$
+$$
+CREATE TRIGGER account_balance_update
+BEFORE INSERT
+ON `transaction` FOR EACH ROW
+BEGIN
+    DECLARE account_balance DECIMAL(8,2);
+
+	SELECT balance INTO account_balance FROM account a WHERE a.id = new.id_emitter;
+
+	UPDATE account 
+	SET balance = (account_balance + NEW.amount)
+	WHERE id = NEW.id_emitter;
+END
+$$
+DELIMITER ;
