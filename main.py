@@ -203,8 +203,10 @@ def insert_transaction(n, max1, max2):
       random.randint(1, max2),
       fake.date(),
     ))
-  insert_many("transaction", "amount, label, id_emitter, id_receiver, sent_on",
-              values, "%s, %s, %s, %s, %s")
+  # Allows to insert 100000 per 100000
+  for element in [values[x:x+100000] for x in range(0, len(values), 100000)]:
+    insert_many("transaction", "amount, label, id_emitter, id_receiver, sent_on",
+                element, "%s, %s, %s, %s, %s")
   
 #######################################################################################
 # Runners
@@ -224,4 +226,4 @@ insert_client(10_000, 1_000, 500)
 insert_account(50_000, 10_000)
 insert_loan(50_000, 50_000)
 insert_saving_account(100_000, 50_000, 1_000)
-insert_transaction(10_000, 10_000, 10_000)
+insert_transaction(7_000_000, 10_000, 10_000)
