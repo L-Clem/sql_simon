@@ -183,8 +183,8 @@ CREATE PROCEDURE getClientTotalOfAssets
 (IN client_id INT, OUT totalOfAssets DECIMAL(9,2))
 	BEGIN
 		DECLARE tab DECIMAL(8,2);
-	    DECLARE tlb DECIMAL(8,2);
-	    DECLARE tsb DECIMAL(8,2);
+	        DECLARE tlb DECIMAL(8,2);
+	        DECLARE tsb DECIMAL(8,2);
 		
 		SELECT totalAccountBalance
 		INTO tab
@@ -214,29 +214,7 @@ Procédure permettant d'obtenir les agences les plus proches d'un client.
 
 ```sql
 DELIMITER //
-CREATE PROCEDURE getClientTotalOfAssets 
-(IN client_id INT, OUT totalOfAssets DECIMAL(9,2))
-	BEGIN
-		DECLARE tab DECIMAL(8,2);
-	    DECLARE tlb DECIMAL(8,2);
-	    DECLARE tsb DECIMAL(8,2);
-		
-		SELECT totalAccountBalance
-		INTO tab
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;
-	
-		SELECT totalLoanBalance
-		INTO tlb
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;
-	
-		SELECT totalSavingBalance
-		INTO tsb
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;	
-	
-		SET totalOfAssets = tab + tlb + tsb;
+
 	END //
 DELIMITER ;
 ```
