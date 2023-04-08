@@ -30,7 +30,8 @@ CREATE TABLE `client` (
   `first_name` VARCHAR(1000) NOT NULL,
   `last_name` VARCHAR(1000) NOT NULL,
   `id_address` INT NOT NULL,
-  `id_agency` INT NOT NULL
+  `id_agency` INT NOT NULL,
+  `salary_per_month` decimal(8,2) NOT NULL
 );
 
 CREATE TABLE `account` (
@@ -46,7 +47,8 @@ CREATE TABLE `transaction` (
   `amount` DECIMAL(8,2) NOT NULL,
   `label` VARCHAR(500) NOT NULL,
   `id_emitter` INT NOT NULL,
-  `id_receiver` INT NOT NULL
+  `id_receiver` INT NOT NULL,
+  `sent_on` date NOT NULL
 );
 
 CREATE TABLE `agency` (
