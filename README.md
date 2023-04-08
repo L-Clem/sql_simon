@@ -104,12 +104,10 @@ FROM (
 			FROM loan l 
 				inner join account a ON a.id = l.id_account
 			GROUP BY a.id_client 
-			ORDER BY total_ln DESC
 		) sub
 		INNER join account a2 ON a2.id_client = sub.id_client
 		inner join saving_account sa ON a2.id = sa.id_account  
 	GROUP BY a2.id_client
-	ORDER BY total_sa DESC
 ) sub2
 	inner join account a3 ON sub2.id_client = a3.id_client 
 GROUP BY sub2.id_client
