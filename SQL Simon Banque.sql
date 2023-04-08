@@ -29,16 +29,16 @@ CREATE TABLE `client` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `first_name` VARCHAR(1000) NOT NULL,
   `last_name` VARCHAR(1000) NOT NULL,
+  `salary_per_month` DECIMAL(8,2) NOT NULL,
   `id_address` INT NOT NULL,
-  `id_agency` INT NOT NULL,
-  `salary_per_month` decimal(8,2) NOT NULL
+  `id_agency` INT NOT NULL
 );
 
 CREATE TABLE `account` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `balance` DECIMAL(8,2) NOT NULL,
   `iban` VARCHAR(34) UNIQUE NOT NULL,
-  `swift` CHAR(8) UNIQUE NOT NULL,
+  `swift` CHAR(8) NOT NULL,
   `id_client` INT NOT NULL
 );
 
@@ -46,9 +46,9 @@ CREATE TABLE `transaction` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `amount` DECIMAL(8,2) NOT NULL,
   `label` VARCHAR(500) NOT NULL,
+  `sent_on` DATE NOT NULL,
   `id_emitter` INT NOT NULL,
-  `id_receiver` INT NOT NULL,
-  `sent_on` date NOT NULL
+  `id_receiver` INT NOT NULL
 );
 
 CREATE TABLE `agency` (
