@@ -76,7 +76,7 @@ AS
          a.balance,
          a.iban
   FROM   account a
-         inner join client c
+         INNER JOIN client c
                  ON a.id_client = c.id
   ORDER  BY a.id_client; 
 ```
