@@ -43,19 +43,19 @@ Notre base représente une structure de banque simplifiée.
 ## Indexes
 
 ### 1 - Loan: opening
-
+![Loan](view1.png)
 Afin de pouvoir trier la table par date d'ouverture d'un crédit plus rapidement lors de calculs de temps.
 
 
 
 ### 2 - Advisor: status
-
+![Advisor](view2.png)
 Afin de pouvoir trier la table par états des employées. Pour retrouver plus rapidement les employées en service ou ceux en vacances par exemple.
 
 
 
 ### 3 - Account: iban, swift
-
+![Account](view3.png)
 Afin de pouvoir chercher plus rapidement les comptes lors de transactions inter-bancaires.
 
 <br>
