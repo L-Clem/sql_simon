@@ -34,8 +34,6 @@ CREATE TABLE `client` (
   `salary_per_month` decimal(8,2) NOT NULL
 );
 
-DROP TABLE account;
-
 CREATE TABLE `account` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `balance` DECIMAL(8,2) NOT NULL,
