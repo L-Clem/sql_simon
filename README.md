@@ -17,7 +17,7 @@
     + [3 - Account: iban, swift](#3---account--iban--swift)
   * [Vues](#vues)
     + [1 - Comptes client](#1---comptes-client)
-    + [2 - Montants comptes clients](#2---montants-comptes-clients)
+    + [2 - Les plus grosses fortunes](#2---Les plus grosses fortunes)
     + [3 - Montants prêts clients](#3---montants-pr-ts-clients)
     + [4 - Montants épargnes clients](#4---montants--pargnes-clients)
     + [5 - Montants clients](#5---montants-clients)
@@ -84,7 +84,7 @@ AS
 
 
 
-### 2 - Montants comptes clients
+### 2 - Les plus grosses fortunes
 
 Vue permettant d'afficher les 10 plus grosses fortunes.
 
@@ -122,18 +122,6 @@ LIMIT 10
 Vue permettant d'afficher le total des montants des prêts par clients.
 
 ```sql
-CREATE VIEW clientTotalBalanceLoans 
-AS
-SELECT a.id_client,
-       c.last_name,
-       c.first_name,
-       SUM(l.balance) AS totalLoanBalance
-FROM   account a
-       INNER JOIN client c
-               ON a.id_client = c.id
-       INNER JOIN loan l ON a.id = l.id_account 
-GROUP BY c.id
-ORDER  BY a.id_client;
 ```
 
 
@@ -143,18 +131,6 @@ ORDER  BY a.id_client;
 Vue permettant d'afficher le total des montants des épargnes par clients.
 
 ```sql
-CREATE VIEW clientTotalBalanceSavings
-AS
-SELECT a.id_client,
-       c.last_name,
-       c.first_name,
-       SUM(sa.balance) AS totalSavingBalance
-FROM   account a
-       INNER JOIN client c
-               ON a.id_client = c.id
-       INNER JOIN saving_account sa ON a.id = sa.id_account 
-GROUP BY c.id
-ORDER  BY a.id_client;
 ```
 
 
@@ -209,8 +185,7 @@ DELIMITER ;
 
 ### 2
 
-Procédure permettant d'obtenir les agences les plus proches d'un client.
-
+Procédure permettant de dire le montant des agios d'un client ?
 
 ### 3 
 
