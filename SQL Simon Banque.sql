@@ -30,7 +30,8 @@ CREATE TABLE `client` (
 	`first_name` VARCHAR(1000) NOT NULL,
 	`last_name` VARCHAR(1000) NOT NULL,
 	`salary_per_month` decimal(8,2) NOT NULL,
-	`fk_advisor` INT NOT NULL
+	`fk_advisor` INT NOT NULL,
+	`fk_account_type` INT NOT NULL 
 );
 
 
@@ -59,16 +60,15 @@ CREATE TABLE `transaction` (
 	`amount` DECIMAL(8,2) NOT NULL,
 	`emission` DATETIME NOT NULL,
 	`fk_sender_client` INT NOT NULL,
-	`fk_receiver_client` INT NOT NULL,
-	`fk_sender_account_type` INT NOT NULL,
-	`fk_receiver_account_type` INT NOT NULL
+	`fk_receiver_client` INT NOT NULL
 );
 
 CREATE TABLE `account_type` (
 	`pk_account_type` INT PRIMARY KEY AUTO_INCREMENT,
 	`interest_rate` FLOAT(3,2) DEFAULT NULL,
 	`opening` DATETIME DEFAULT NULL, 
-	`ending` DATETIME DEFAULT NULL
+	`ending` DATETIME DEFAULT NULL,
+	`risk` ENUM ('low', 'medium', 'high') NOT NULL
 );
 
 /*CREATE INDEX `account_index_0` ON `account` (`iban`, `swift`);
@@ -85,13 +85,11 @@ ALTER TABLE `department` ADD FOREIGN KEY (`fk_region`) REFERENCES `region` (`pk_
 
 ALTER TABLE `client` ADD FOREIGN KEY (`fk_advisor`) REFERENCES `advisor` (`pk_advisor`);
 
+ALTER TABLE `client` ADD FOREIGN KEY (`fk_account_type`) REFERENCES `account_type`(`pk_account_type`);
+
 ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_sender_client`) REFERENCES `client` (`pk_client`);
 
 ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_receiver_client`) REFERENCES `client` (`pk_client`);
-
-ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_sender_account_type`) REFERENCES `account_type` (`pk_account_type`);
-
-ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_receiver_account_type`) REFERENCES `account_type` (`pk_account_type`);
 
 ALTER TABLE `agency_advisor` ADD FOREIGN KEY (`fk_agency`)  REFERENCES `agency` (`pk_agency`);
 
