@@ -30,8 +30,13 @@ CREATE TABLE `client` (
 	`first_name` VARCHAR(1000) NOT NULL,
 	`last_name` VARCHAR(1000) NOT NULL,
 	`salary_per_month` decimal(8,2) NOT NULL,
-	`fk_advisor` INT NOT NULL,
-	`fk_account_type` INT NOT NULL 
+	`fk_advisor` INT NOT NULL
+);
+
+CREATE TABLE `client_account_type` (
+	`fk_client` INT,
+	`fk_account_type` INT,
+	PRIMARY KEY (`fk_client`, `fk_account_type`)
 );
 
 
@@ -85,7 +90,8 @@ ALTER TABLE `department` ADD FOREIGN KEY (`fk_region`) REFERENCES `region` (`pk_
 
 ALTER TABLE `client` ADD FOREIGN KEY (`fk_advisor`) REFERENCES `advisor` (`pk_advisor`);
 
-ALTER TABLE `client` ADD FOREIGN KEY (`fk_account_type`) REFERENCES `account_type`(`pk_account_type`);
+ALTER TABLE `client_account_type` ADD FOREIGN KEY (`fk_client`) REFERENCES `client`(`pk_client`);
+ALTER TABLE `client_account_type` ADD FOREIGN KEY (`fk_account_type`) REFERENCES `account_type`(`pk_account_type`);
 
 ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_sender_client`) REFERENCES `client` (`pk_client`);
 
