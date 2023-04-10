@@ -34,9 +34,9 @@ CREATE TABLE `client` (
 );
 
 CREATE TABLE `client_account_type` (
+	`pk_client_account_type` INT PRIMARY KEY AUTO_INCREMENT,
 	`fk_client` INT,
-	`fk_account_type` INT,
-	PRIMARY KEY (`fk_client`, `fk_account_type`)
+	`fk_account_type` INT
 );
 
 
@@ -48,9 +48,9 @@ CREATE TABLE `agency` (
 );
 
 CREATE TABLE `agency_advisor` (
+	`pk_agency_advisor` INT PRIMARY KEY AUTO_INCREMENT,
 	`fk_agency` INT,
-	`fk_advisor` INT,
-	PRIMARY KEY (`fk_agency`, `fk_advisor`)
+	`fk_advisor` INT
 );
 
 CREATE TABLE `advisor` (
