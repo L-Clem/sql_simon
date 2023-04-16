@@ -70,9 +70,10 @@ CREATE TABLE `transaction` (
 
 CREATE TABLE `account_type` (
 	`pk_account_type` INT PRIMARY KEY AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL,
 	`interest_rate` FLOAT(3,2) DEFAULT NULL,
-	`opening` DATETIME DEFAULT NULL, 
-	`ending` DATETIME DEFAULT NULL,
+	`opening` DATETIME NOT NULL, 
+	`ending` DATETIME NOT NULL,
 	`risk` ENUM ('low', 'medium', 'high') NOT NULL
 );
 
@@ -93,9 +94,8 @@ ALTER TABLE `client` ADD FOREIGN KEY (`fk_advisor`) REFERENCES `advisor` (`pk_ad
 ALTER TABLE `client_account_type` ADD FOREIGN KEY (`fk_client`) REFERENCES `client`(`pk_client`);
 ALTER TABLE `client_account_type` ADD FOREIGN KEY (`fk_account_type`) REFERENCES `account_type`(`pk_account_type`);
 
-ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_sender_client`) REFERENCES `client` (`pk_client`);
-
-ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_receiver_client`) REFERENCES `client` (`pk_client`);
+ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_sender_client`) REFERENCES `account_type` (`pk_account_type`);
+ALTER TABLE `transaction` ADD FOREIGN KEY (`fk_receiver_client`) REFERENCES `account_type` (`pk_account_type`);
 
 ALTER TABLE `agency_advisor` ADD FOREIGN KEY (`fk_agency`)  REFERENCES `agency` (`pk_agency`);
 
