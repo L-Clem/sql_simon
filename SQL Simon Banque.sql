@@ -74,7 +74,8 @@ CREATE TABLE `account_type` (
 	`interest_rate` FLOAT(3,2) DEFAULT NULL,
 	`opening` DATETIME NOT NULL, 
 	`ending` DATETIME NOT NULL,
-	`risk` ENUM ('low', 'medium', 'high') NOT NULL
+	`risk` ENUM ('low', 'medium', 'high') NOT NULL,
+	`taxation` BOOLEAN
 );
 
 /*CREATE INDEX `account_index_0` ON `account` (`iban`, `swift`);
