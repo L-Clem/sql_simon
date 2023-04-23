@@ -5,8 +5,6 @@
   - Clément LAFON
   - Clément LO-CASCIO
 
-## TOC
-
 - [Ma (première) DB](#ma--premi-re--db)
   * [TOC](#toc)
   * [But](#but)
@@ -17,17 +15,15 @@
     + [3 - Account: iban, swift](#3---account--iban--swift)
   * [Vues](#vues)
     + [1 - Comptes client](#1---comptes-client)
-    + [2 - Les plus grosses fortunes](#2---Les plus grosses fortunes)
+    + [2 - Montants comptes clients](#2---montants-comptes-clients)
     + [3 - Montants prêts clients](#3---montants-pr-ts-clients)
     + [4 - Montants épargnes clients](#4---montants--pargnes-clients)
     + [5 - Montants clients](#5---montants-clients)
   * [Procédures stockées](#proc-dures-stock-es)
-    + [1](#1)
-    + [2](#2)
+    + [1 - Total des actifs](#1---total-des-actifs)
+    + [2 - Agences les plus proches](#2---agences-les-plus-proches)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 
 <br>
 
@@ -65,72 +61,133 @@ Afin de pouvoir chercher plus rapidement les comptes lors de transactions inter-
 
 ### 1 - Comptes client
 
-Vue permettant d'afficher l'ensemble des comptes par client.
+  * Retourne le solde des comptes d'un client et le type de compte associée
 
 ```sql
 CREATE VIEW clientaccounts
 AS
-  SELECT a.id_client,
-         c.last_name,
-         c.first_name,
-         a.id AS accountIndex,
-         a.balance,
-         a.iban
-  FROM   account a
-         inner join client c
-                 ON a.id_client = c.id
-  ORDER  BY a.id_client; 
+  CALL simon_sql.get_balance_account(9725);
+
+  SELECT 
+      account_type.name as 'Account Name',
+      temp_get_balance_account.Balance,
+      temp_get_balance_account.On
+  FROM temp_get_balance_account
+      inner join account_type ON account_type.pk_account_type = temp_get_balance_account.pk_account_type
+```
+
+```sql
+Procédure qui permet de retourner le solde d un compte 
+
+DROP PROCEDURE IF EXISTS get_balance_account;
+
+CREATE PROCEDURE `simon_sql`.`get_balance_account`(IN id_client INT)
+BEGIN
+	DROP TEMPORARY TABLE IF EXISTS temp_get_balance_account;
+	
+	CREATE TEMPORARY TABLE temp_get_balance_account
+	SELECT
+		account_type.pk_account_type,
+		sum(amount) as 'Balance', 
+		DATE_FORMAT(LAST_DAY(transaction.emission), "%Y-%m-%d") as 'On'
+	FROM `transaction` 
+		inner join account_type ON account_type.pk_account_type = transaction.fk_sender_account_type 
+	WHERE fk_sender_client = id_client 
+	GROUP BY YEAR(emission), MONTH (emission);
+END
 ```
 
 
 
-### 2 - Les plus grosses fortunes
+### 2 - Gains d'un client sur 12 mois
 
-Vue permettant d'afficher les 10 plus grosses fortunes.
+  * Vue qui permet d'obtenir tous les gains d'un client sur 12 mois.
 
 ```sql
-CREATE VIEW top_10_wealthiest_people
+CREATE VIEW earning_of_client
 AS
-SELECT
-	a3.id_client,
-	(SUM(a3.balance) + sub2.total_sa + sub2.total_ln) as total_account_amounts_by_client
-FROM (
-	SELECT 
-		a2.id_client as id_client,
-		SUM(sa.balance) as total_sa,
-		sub.total_ln
-	FROM (
-			SELECT a.id_client, SUM(l.balance) as total_ln
-			FROM loan l 
-				inner join account a ON a.id = l.id_account
-			GROUP BY a.id_client 
-		) sub
-		INNER join account a2 ON a2.id_client = sub.id_client
-		inner join saving_account sa ON a2.id = sa.id_account  
-	GROUP BY a2.id_client
-) sub2
-	inner join account a3 ON sub2.id_client = a3.id_client 
-GROUP BY sub2.id_client
-ORDER BY total_account_amounts_by_client DESC 
-LIMIT 10
+SELECT 
+	CONCAT(receiver.first_name, ' ', receiver.last_name) as 'Receive',
+	CONCAT(sender.first_name, ' ', sender.last_name) as 'From',
+	CONCAT(transaction.amount, ' €') as 'Amount',
+	DATE_FORMAT(transaction.emission , "%d/%m/%Y") as 'on' 
+FROM `transaction`
+	inner join client as sender ON transaction.fk_sender_client = sender.pk_client 
+	inner join client as receiver ON transaction.fk_receiver_client  = receiver.pk_client 
+WHERE sender.pk_client = 7852 and transaction.amount > 0 and transaction.emission BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()
+ORDER BY emission DESC;
+
+SELECT * FROM earning_of_client;
 ```
 
 
 
-### 3 - Montants prêts clients
+### 3 - Montants intérets des placements d'un client
 
-Vue permettant d'afficher le total des montants des prêts par clients.
+ * Vue qui permet de retourner le montant des intérets du placement d'un client au cours de sa durée de vie
 
 ```sql
-```
+CREATE VIEW savings_clients
+AS
+SELECT 
+	CONCAT(client.first_name, ' ', client.last_name) as 'Who',
+	SUM(amount) as 'Saves',
+	((SUM(amount) * account_type.interest_rate) / 100) as 'Bank Interest',
+	(SUM(amount) + ((SUM(amount) * account_type.interest_rate) / 100)) as 'New Balance',
+	t.emission as 'On'
+FROM `transaction` t 
+	inner join account_type ON t.fk_receiver_account_type = account_type.pk_account_type 
+	inner join client on t.fk_receiver_client = client.pk_client 
+WHERE t.fk_receiver_account_type = 3 and t.fk_receiver_client = 7123 
+GROUP BY YEAR(t.emission), MONTH (t.emission)
+ORDER BY t.emission DESC;
 
+SELECT * FROM savings_clients;
+```
 
 
 ### 4 - Montants épargnes clients
 
-Vue permettant d'afficher le total des montants des épargnes par clients.
+Procédure qui permet de déterminer si le compte est à découvert depuis plus de 3 mois
 
 ```sql
+DROP PROCEDURE IF EXISTS check_open_a_consumer_loan;
+    
+CREATE PROCEDURE check_open_a_consumer_loan(IN id_client INTEGER, IN end_date VARCHAR(25), INOUT open_a_consumer_credit BOOLEAN)
+BEGIN
+  DECLARE is_done INTEGER DEFAULT 0;
+  DECLARE c_balance DECIMAL(8,2);
+ 
+  DECLARE c_counter INTEGER DEFAULT 0;
+ 
+  -- déclare le curseur
+  DECLARE account_cursor CURSOR FOR
+    SELECT temp_get_balance_account.Balance FROM temp_get_balance_account inner join account_type ON account_type.pk_account_type = temp_get_balance_account.pk_account_type where account_type.name LIKE 'Compte Bancaire%' AND temp_get_balance_account.On BETWEEN DATE_SUB(end_date, INTERVAL 3 MONTH) AND end_date;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET is_done = 1;
+  
+  -- ouvre le curseur
+  OPEN account_cursor;
+
+  get_list: LOOP
+  FETCH account_cursor INTO c_balance;
+ 
+  IF is_done = 1 THEN
+  LEAVE get_list;
+  END IF;
+ 
+  IF c_balance < 0 THEN
+  SET c_counter = c_counter + 1;
+  END IF;
+  END LOOP get_list;
+  -- ferme le curseur
+  CLOSE account_cursor;
+ 
+  IF c_counter >= 3 THEN
+  SET open_a_consumer_credit = open_a_consumer_credit + 1;
+  END IF;
+  SET open_a_consumer_credit = open_a_consumer_credit + 0;
+END 
 ```
 
 
@@ -142,52 +199,4 @@ CREATE VIEW
 AS
 ```
 
-
-
-<br>
-
-## Procédures stockées
-
-### 1 - Total des actifs
-
-Procédure permettant d'obtenir le total des actifs d'un client (comptes, prêts, épargnes).
-
-```sql
-DELIMITER //
-CREATE PROCEDURE getClientTotalOfAssets 
-(IN client_id INT, OUT totalOfAssets DECIMAL(9,2))
-	BEGIN
-		DECLARE tab DECIMAL(8,2);
-	    DECLARE tlb DECIMAL(8,2);
-	    DECLARE tsb DECIMAL(8,2);
-		
-		SELECT totalAccountBalance
-		INTO tab
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;
-	
-		SELECT totalLoanBalance
-		INTO tlb
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;
-	
-		SELECT totalSavingBalance
-		INTO tsb
-		FROM clientTotalBalanceAllTypes
-		WHERE id = client_id;	
-	
-		SET totalOfAssets = tab + tlb + tsb;
-	END //
-DELIMITER ;
-```
-
-
-
-### 2
-
-Procédure permettant de dire le montant des agios d'un client ?
-
-### 3 
-
-Procédure permettant de dire si un client à la  possibilité d'obtenir un crédit
 
