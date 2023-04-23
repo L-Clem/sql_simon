@@ -293,4 +293,4 @@ def insert_transaction(loop_number, max_fk_client):
 # insert_client(loop_number=10_000, max_fk_advisor=1_000, max_fk_address=1_000)
 # insert_client_account_type(loop_number=20_000, max_fk_client=10_000, max_fk_account_type=len(account_type))
 
-insert_transaction(loop_number=10_000, max_fk_client=10_000)
+insert_transaction(loop_number=1_000_000, max_fk_client=10_000)
