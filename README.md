@@ -8,7 +8,6 @@
 
 
 - [Ma (première) DB](#ma--premi-re--db)
-  * [TOC](#toc)
   * [But](#but)
     + [ERD](#erd)
   * [Indexes](#indexes)
