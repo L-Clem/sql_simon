@@ -5,20 +5,22 @@
   - Clément LAFON
   - Clément LO-CASCIO
 
+
+
 - [Ma (première) DB](#ma--premi-re--db)
   * [TOC](#toc)
   * [But](#but)
     + [ERD](#erd)
   * [Indexes](#indexes)
-    + [1 - Loan: opening](#1---loan--opening)
+    + [1 - Client Account Type: opening](#Client-Account-Type--opening)
     + [2 - Advisor: status](#2---advisor--status)
-    + [3 - Account: iban, swift](#3---account--iban--swift)
+    + [3 - Transaction: emission](#3---account--iban--swift)
   * [Vues](#vues)
     + [1 - Comptes client](#1---comptes-client)
-    + [2 - Montants comptes clients](#2---montants-comptes-clients)
-    + [3 - Montants prêts clients](#3---montants-pr-ts-clients)
+    + [2 - Gains d'un client sur 12 mois](#2---gains-d-un-client-sur-12-mois)
+    + [3 - Montants intérets des placements d'un client](#3---montants-int-rets-des-placements-d-un-client)
     + [4 - Montants épargnes clients](#4---montants--pargnes-clients)
-    + [5 - Montants clients](#5---montants-clients)
+    + [5 - Montant des agios](#5---montant-des-agios)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -71,6 +73,7 @@ CREATE INDEX client_account_type_opening_IDX ON simon_sql.client_account_type (o
 SELECT opening  FROM client_account_type group by fk_client;
 ```
 ![img.png](index1_1.png)
+
 ### 2 - Advisor: status
 
 Afin de pouvoir trier la table par états des employées. Pour retrouver plus rapidement les employées en service ou ceux en vacances par exemple.
