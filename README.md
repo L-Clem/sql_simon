@@ -14,7 +14,7 @@
     + [1 - Client Account Type: opening](#Client-Account-Type--opening)
     + [2 - Advisor: status](#2---advisor--status)
     + [3 - Transaction: emission](#3---account--iban--swift)
-  * [Vues](#vues)
+  * [Requêtes](#vues)
     + [1 - Comptes client](#1---comptes-client)
     + [2 - Gains d'un client sur 12 mois](#2---gains-d-un-client-sur-12-mois)
     + [3 - Montants intérets des placements d'un client](#3---montants-int-rets-des-placements-d-un-client)
