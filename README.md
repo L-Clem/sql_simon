@@ -5,23 +5,29 @@
   - Clément LAFON
   - Clément LO-CASCIO
 
+<br>
 
+# Table des matières
 
-- [Ma (première) DB](#ma--premi-re--db)
+- [Ma (première) DB](#ma--première--db)
+- [Table des matières](#table-des-mati-res)
   * [But](#but)
+    + [Contrainte et Remarque](#contrainte-et-remarque)
+    + [Optimisation BDD](#optimisation-bdd)
     + [ERD](#erd)
   * [Indexes](#indexes)
-    + [1 - Client Account Type: opening](#Client-Account-Type--opening)
+    + [1 - Client Account Type: opening](#1---client-account-type:--opening)
     + [2 - Advisor: status](#2---advisor--status)
-    + [3 - Transaction: emission](#3---account--iban--swift)
-  * [Requêtes](#vues)
+    + [3 - Transaction: emission](#3---transaction--emission)
+  * [Vues](#vues)
     + [1 - Comptes client](#1---comptes-client)
     + [2 - Gains d'un client sur 12 mois](#2---gains-d-un-client-sur-12-mois)
     + [3 - Montants intérets des placements d'un client](#3---montants-int-rets-des-placements-d-un-client)
-    + [4 - Découvert compte client](#4---Découvert-compte-client)
+    + [4 - Découvert compte client](#4---d-couvert-compte-client)
     + [5 - Montant des agios](#5---montant-des-agios)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 <br>
 
@@ -48,6 +54,8 @@ Seul les types de comptes non externe peuvent effectuer ce type de transaction.
 ### Optimisation BDD
 Nous avons préféré rajouter un certain nombre de procédures stockées en passant en paramètre, l'id du client.
 Plutôt que d'écrire une vue effectuant le même calcul pour tous nos clients et ensuite filtrer sur le client de notre choix.
+
+<br>
 
 ### ERD
 ![ERD](erd.png)
