@@ -1,15 +1,22 @@
 # Ma (première) DB
-
-- Groupe G1
+## Groupe
+- Groupe G1-7
   - Arnaud BOYER
   - Clément LAFON
   - Clément LO-CASCIO
+
+## Fichiers
+- Dump de la base: dump.sql
+- Faker generator: main.py
+- SQL DB generator: SQL Simon Banque.sql
 
 <br>
 
 # Table des matières
 
-- [Ma (première) DB](#ma--première--db)
+- [Ma (première) DB](#ma--premi-re--db)
+  * [Groupe](#groupe)
+  * [Fichiers](#fichiers)
 - [Table des matières](#table-des-mati-res)
   * [But](#but)
     + [Contrainte et Remarque](#contrainte-et-remarque)
@@ -27,6 +34,7 @@
     + [5 - Montant des agios](#5---montant-des-agios)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 <br>
@@ -133,6 +141,7 @@ GROUP BY client.pk_client ;
 ```
 
 ![img.png](png/index3_1.png)
+
 <br>
 
 ## Vues 
