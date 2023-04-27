@@ -4,11 +4,11 @@ import mysql.connector
 from faker import Faker
 import datetime
 
-mydb = mysql.connector.connect(host='192.168.10.2',
-                               port='3306',
-                               database='simon_sql',
-                               user='root',
-                               password='/J60()nEH_t%w.M5')
+mydb = mysql.connector.connect(host='',
+                               port='',
+                               database='',
+                               user='',
+                               password='')
 
 fake = Faker('fr_FR')
 
