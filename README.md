@@ -6,7 +6,7 @@
   - Clément LO-CASCIO
 
 ## Fichiers
-- Dump de la base: dump.sql
+- Dump de la base: dump.zip
 - Faker generator: main.py
 - SQL DB generator: SQL Simon Banque.sql
 
