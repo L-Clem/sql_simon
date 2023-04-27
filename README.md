@@ -16,7 +16,7 @@
     + [Optimisation BDD](#optimisation-bdd)
     + [ERD](#erd)
   * [Indexes](#indexes)
-    + [1 - Client Account Type: opening](#1---client-account-type:--opening)
+    + [1 - Client Account Type: opening](#1---client-account-type--opening)
     + [2 - Advisor: status](#2---advisor--status)
     + [3 - Transaction: emission](#3---transaction--emission)
   * [Vues](#vues)
