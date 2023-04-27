@@ -83,11 +83,11 @@ CREATE TABLE `account_type` (
 	`is_external` BOOLEAN DEFAULT FALSE
 );
 
-/*CREATE INDEX `account_index_0` ON `account` (`iban`, `swift`);
+CREATE INDEX `account_index_0` ON `account` (`iban`, `swift`);
 
 CREATE INDEX `advisor_index_1` ON `advisor` (`status`);
 
-CREATE INDEX `loan_index_2` ON `loan` (`opening`);*/
+CREATE INDEX `loan_index_2` ON `loan` (`opening`);
 
 ALTER TABLE `address` ADD FOREIGN KEY (`fk_city`) REFERENCES `city` (`pk_city`);
 

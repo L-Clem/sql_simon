@@ -58,7 +58,7 @@ Plutôt que d'écrire une vue effectuant le même calcul pour tous nos clients e
 <br>
 
 ### ERD
-![ERD](erd.png)
+![ERD](png/erd.png)
 
 <br>
 
@@ -71,7 +71,7 @@ Afin de pouvoir trier la table par date d'ouverture d'un crédit plus rapidement
 ```sql
 SELECT opening  FROM client_account_type group by fk_client;
 ```
-![img.png](index1.png)
+![img.png](png/index1.png)
 
 ```sql
 CREATE INDEX client_account_type_opening_IDX ON simon_sql.client_account_type (opening);
@@ -79,7 +79,7 @@ CREATE INDEX client_account_type_opening_IDX ON simon_sql.client_account_type (o
 ```sql
 SELECT opening  FROM client_account_type group by fk_client;
 ```
-![img.png](index1_1.png)
+![img.png](png/index1_1.png)
 
 ### 2 - Advisor: status
 
@@ -92,7 +92,7 @@ FROM advisor
 	inner join agency_advisor ON advisor.pk_advisor = agency_advisor.fk_advisor 
 GROUP BY agency_advisor.fk_agency ;
 ```
-![img.png](index2.png)
+![img.png](png/index2.png)
 
 ```sql
 CREATE INDEX advisor_status_IDX ON simon_sql.advisor (status);
@@ -105,7 +105,7 @@ FROM advisor
 	inner join agency_advisor ON advisor.pk_advisor = agency_advisor.fk_advisor 
 GROUP BY agency_advisor.fk_agency ;
 ```
-![img.png](index2_2.png)
+![img.png](png/index2_2.png)
 
 ### 3 - Transaction: emission
 
@@ -118,7 +118,7 @@ FROM transaction
 	inner join client ON transaction.fk_sender_client  = client.pk_client  
 GROUP BY client.pk_client ;
 ```
-![img.png](index3.png)
+![img.png](png/index3.png)
 
 ```sql
 CREATE INDEX transaction_emission_IDX ON simon_sql.transaction (emission);
@@ -132,7 +132,7 @@ FROM transaction
 GROUP BY client.pk_client ;
 ```
 
-![img.png](index3_1.png)
+![img.png](png/index3_1.png)
 <br>
 
 ## Vues 
